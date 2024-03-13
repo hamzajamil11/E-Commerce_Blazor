@@ -1,0 +1,52 @@
+﻿@page "/"
+@inherits ProductBase
+
+@if(Products == null && ErrorMessage == null)
+{
+    <h1>Loading Data</h1>
+
+}
+else if(ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+    <h3 class="mb-5">Products</h3>
+
+    var productCount = Products.Count();
+
+    @if (productCount > 0)
+    {
+        @foreach(var prodGroup in GetGroupedProductsByCategory())
+        {
+            <h4>@GetCategoryName(prodGroup)</h4>
+                    
+            <div class = "row mt-3">
+                @foreach (var item in prodGroup)
+                {
+                    <div class="col-md-3 mb-2">
+                        <a href="/ProductDetails/@item.Id">
+                            <div class="card">
+                                <img class="img-thumbnail" src="@item.ImageURL">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">
+                                        @item.Name
+                                    </h5>
+                                    <p class="card-text">
+                                        <b>@item.Price.ToString("C")</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
+
+                }
+            </div>
+            <hr class="mb-3"/>
+        }
+
+    }
+
+}
